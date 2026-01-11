@@ -10,8 +10,11 @@ st.title("Telegram Offers Search")
 # Search bar
 search_term = st.text_input("Search offers...", "")
 
+import os
+
 # Fetch data from API
-api_url = "http://127.0.0.1:8000/offers"
+# Use environment variable for Docker compatibility
+api_url = os.environ.get("API_URL", "http://127.0.0.1:8000/offers")
 params = {"limit": 100}
 if search_term:
     params["search"] = search_term

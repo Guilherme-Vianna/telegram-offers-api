@@ -1,0 +1,31 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    environment:
+      - MONGO_URL=${MONGO_URL} # Ensure MONGO_URL is passed or set in .env
+    # If you want to run a local mongodb as well, uncomment below:
+    # depends_on:
+    #   - mongo
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    ports:
+      - "8501:8501"
+    environment:
+      - API_URL=http://backend:8000/offers # Internal docker network URL
+    depends_on:
+      - backend
+
+# If using a local mongodb service:
+# mongo:
+#   image: mongo:latest
+#   ports:
+#     - "27017:27017"
